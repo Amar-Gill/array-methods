@@ -1,0 +1,19 @@
+/* @import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap'); */
+html {
+    box-sizing: border-box;
+    --hue-1: #004c6d;
+    --hue-2: #6996b3;
+    --hue-3: #c1e7ff;
+    --comp-1: #bc5090;
+    --comp-2: #ffa600;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+  
+body {
+    background: var(--hue-1);
+    /* color: var(--hue-3); */
+    font-family: 'Courier New', Courier, monospace;
+}
