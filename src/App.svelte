@@ -7,7 +7,7 @@
 
   let selectionSortMinValueId = null;
 
-  let durationTime = 100;
+  let useFastForward = false;
 
   function resetValues() {
     values = [];
@@ -40,7 +40,7 @@
 
   // definition of the different sorting algorithms
   function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+      return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   async function bubbleSort() {
@@ -61,12 +61,13 @@
           values[i - 1] = right;
         }
 
-        await sleep(150);
+        !useFastForward && await sleep(150);
       }
     }
 
     // return array;
     activeId = null;
+    useFastForward = false;
   }
 
   async function selectionSort() {
@@ -76,7 +77,7 @@
       let min = i;
       activeId = values[i].id;
       selectionSortMinValueId = values[i].id;
-      await sleep(420);
+      !useFastForward && await sleep(420);
 
       for (let j = i + 1; j < len; j++) {
         activeId = values[j].id;
@@ -85,18 +86,19 @@
           selectionSortMinValueId = values[j].id;
           // await sleep(2000);
         }
-        await sleep(40);
+        !useFastForward && await sleep(40);
       }
       if (min !== i) {
         let tmp = values[i];
         values[i] = values[min];
         values[min] = tmp;
-        await sleep(600);
+        !useFastForward && await sleep(600);
       }
       selectionSortMinValueId = null;
     }
     // return arr;
     activeId = null;
+    useFastForward = false;
   }
 
   async function insertionSort() {
@@ -104,17 +106,18 @@
       let j = i - 1;
       let temp = values[i];
       activeId = values[i].id;
-      await sleep(420);
+      !useFastForward && await sleep(420);
       while (j >= 0 && values[j].value > temp.value) {
         // activeId = values[j].id;
         values[j + 1] = values[j];
         j--;
       }
       values[j + 1] = temp;
-      await sleep(420);
+      !useFastForward && await sleep(420);
     }
     // return values;
     activeId = null;
+    useFastForward = false;
   }
 
 </script>
@@ -177,15 +180,11 @@
 </style>
 
 <header>
-  <button disabled={activeId != null} on:click={resetValues}>reset</button>
-  <button disabled={activeId != null} on:click={bubbleSort}>bubble sort</button>
-  <button disabled={activeId != null} on:click={selectionSort}>
-    selection sort
-  </button>
-  <button disabled={activeId != null} on:click={insertionSort}>
-    insertion sort
-  </button>
-  
+  <button disabled={activeId != null} on:click={resetValues}>Reset</button>
+  <button disabled={activeId != null} on:click={bubbleSort}>Bubble Sort</button>
+  <button disabled={activeId != null} on:click={selectionSort}>Selection Sort</button>
+  <button disabled={activeId != null} on:click={insertionSort}>Insertion Sort</button>
+  <button disabled={activeId == null} on:click={() => useFastForward = !useFastForward}>Fast Forward</button>
 </header>
 
 <main class="flex-box">
@@ -200,9 +199,9 @@
   {/each}
 </main>
 <footer>
-  <p>Hint: refresh page to stop execution of the algorithm</p>
   <p>
     Created by
     <a href="https://amar-gill.now.sh" alt="developer website" target="_blank">A. Gill</a>
   </p>
+  <a href="https://github.com/Amar-Gill/array-methods" alt="source code" target="_blank">Source Code</a>
 </footer>
