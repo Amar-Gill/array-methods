@@ -38,11 +38,11 @@
   // initialize the randomized array on app load
   resetValues();
 
-  // definition of the different sorting algorithms
   function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  // definitions of the different sorting algorithms
   async function bubbleSort() {
     let sorted = false;
 
