@@ -1,5 +1,6 @@
 <script>
   import { flip } from "svelte/animate";
+  import StatusIndicator from "./StatusIndicator.svelte";
 
   let values = [];
 
@@ -8,6 +9,8 @@
   let selectionSortMinValueId = null;
 
   let useFastForward = false;
+
+  let valuesSorted = false;
 
   function resetValues() {
     values = [];
@@ -21,6 +24,8 @@
     }
 
     shuffle(values);
+
+    valuesSorted = false;
   }
 
   function shuffle(array) {
@@ -61,13 +66,14 @@
           values[i - 1] = right;
         }
 
-        !useFastForward && await sleep(150);
+        !useFastForward && (await sleep(150));
       }
     }
 
     // return array;
     activeId = null;
     useFastForward = false;
+    valuesSorted = true;
   }
 
   async function selectionSort() {
@@ -77,7 +83,7 @@
       let min = i;
       activeId = values[i].id;
       selectionSortMinValueId = values[i].id;
-      !useFastForward && await sleep(420);
+      !useFastForward && (await sleep(420));
 
       for (let j = i + 1; j < len; j++) {
         activeId = values[j].id;
@@ -86,19 +92,20 @@
           selectionSortMinValueId = values[j].id;
           // await sleep(2000);
         }
-        !useFastForward && await sleep(40);
+        !useFastForward && (await sleep(40));
       }
       if (min !== i) {
         let tmp = values[i];
         values[i] = values[min];
         values[min] = tmp;
-        !useFastForward && await sleep(600);
+        !useFastForward && (await sleep(600));
       }
       selectionSortMinValueId = null;
     }
     // return arr;
     activeId = null;
     useFastForward = false;
+    valuesSorted = true;
   }
 
   async function insertionSort() {
@@ -106,20 +113,20 @@
       let j = i - 1;
       let temp = values[i];
       activeId = values[i].id;
-      !useFastForward && await sleep(420);
+      !useFastForward && (await sleep(420));
       while (j >= 0 && values[j].value > temp.value) {
         // activeId = values[j].id;
         values[j + 1] = values[j];
         j--;
       }
       values[j + 1] = temp;
-      !useFastForward && await sleep(420);
+      !useFastForward && (await sleep(420));
     }
     // return values;
     activeId = null;
     useFastForward = false;
+    valuesSorted = true;
   }
-
 </script>
 
 <style>
@@ -132,7 +139,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   }
 
   .flex-box {
@@ -167,24 +175,54 @@
 
   footer {
     color: var(--hue-3);
+    padding-left: 0.5rem;
   }
 
   footer a {
-    color: var(--comp-2)
+    color: var(--comp-2);
   }
 
   footer a:visited {
-    color: var(--comp-1)
+    color: var(--comp-1);
   }
 
+  header {
+    padding-left: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-right: 1.4rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  header * {
+    margin-right: 0.5rem;
+  }
+
+  header span {
+    margin-left: auto;
+  }
 </style>
 
 <header>
   <button disabled={activeId != null} on:click={resetValues}>Reset</button>
   <button disabled={activeId != null} on:click={bubbleSort}>Bubble Sort</button>
-  <button disabled={activeId != null} on:click={selectionSort}>Selection Sort</button>
-  <button disabled={activeId != null} on:click={insertionSort}>Insertion Sort</button>
-  <button disabled={activeId == null} on:click={() => useFastForward = !useFastForward}>Fast Forward</button>
+  <button disabled={activeId != null} on:click={selectionSort}>
+    Selection Sort
+  </button>
+  <button disabled={activeId != null} on:click={insertionSort}>
+    Insertion Sort
+  </button>
+  <button
+    disabled={activeId == null}
+    on:click={() => (useFastForward = !useFastForward)}>
+    Fast Forward
+  </button>
+
+  <span>
+    <StatusIndicator {valuesSorted} />
+  </span>
+
 </header>
 
 <main class="flex-box">
@@ -201,7 +239,14 @@
 <footer>
   <p>
     Created by
-    <a href="https://amar-gill.now.sh" alt="developer website" target="_blank">A. Gill</a>
+    <a href="https://amar-gill.now.sh" alt="developer website" target="_blank">
+      A. Gill
+    </a>
   </p>
-  <a href="https://github.com/Amar-Gill/array-methods" alt="source code" target="_blank">Source Code</a>
+  <a
+    href="https://github.com/Amar-Gill/array-methods"
+    alt="source code"
+    target="_blank">
+    Source Code
+  </a>
 </footer>

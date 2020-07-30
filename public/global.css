@@ -16,4 +16,6 @@ body {
     background: var(--hue-1);
     /* color: var(--hue-3); */
     font-family: 'Courier New', Courier, monospace;
+    padding-left: 7.5rem;
+    padding-right: 8rem;
 }
