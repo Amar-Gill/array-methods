@@ -8,6 +8,14 @@
 
   let selectionSortMinValueId = null;
 
+  let binarySearchLeft = null;
+
+  let binarySearchRight = null;
+
+  let binarySearchMiddle = null;
+
+  let binarySearchSuccess = null;
+
   let useFastForward = false;
 
   let valuesSorted = false;
@@ -127,6 +135,50 @@
     useFastForward = false;
     valuesSorted = true;
   }
+
+  // TODO - review reactive variable syntax: "$"
+  async function binarySearch() {
+    const target = parseInt(document.getElementById("search-target").value);
+
+    let left = 0;
+    let right = values.length - 1;
+    // apply styling and sleep
+    binarySearchLeft = left;
+    binarySearchRight = right;
+
+    while (left <= right) {
+      let middle = Math.floor((left + right) / 2);
+      // apply styling and sleep
+      binarySearchMiddle = middle;
+      await sleep(1500);
+
+      let potentialMatch = values[middle].value;
+
+      if (target === potentialMatch) {
+        await sleep(300);
+        binarySearchLeft = null;
+        binarySearchRight = null;
+        binarySearchMiddle = null;
+        binarySearchSuccess = middle;
+        await sleep(1500);
+        binarySearchSuccess = null;
+        console.log(values[middle].value);
+        return 0;
+      } else if (target < potentialMatch) {
+        right = middle - 1;
+        // apply styling and sleep
+        binarySearchRight = right;
+      } else {
+        left = middle + 1;
+        // apply styling and sleep
+        binarySearchLeft = left;
+      }
+    }
+    binarySearchLeft = null;
+    binarySearchRight = null;
+    binarySearchMiddle = null;
+    return -1;
+  }
 </script>
 
 <style>
@@ -162,6 +214,22 @@
 
   [aria-current] {
     border: solid 2px var(--comp-2);
+  }
+
+  .search-pointer-ends {
+    border: solid 2px var(--comp-2);
+  }
+
+  .search-pointer-middle {
+    background-color: var(--comp-1);
+    color: var(--comp-2);
+    font-weight: bold;
+  }
+
+  .search-pointer-success {
+    background-color: green;
+    color: yellow;
+    font-weight: bold;
   }
 
   button {
@@ -218,6 +286,14 @@
     on:click={() => (useFastForward = !useFastForward)}>
     Fast Forward
   </button>
+  <input
+    id="search-target"
+    disabled={!valuesSorted}
+    placeholder="search for a number"
+    type="number" />
+  <button disabled={!valuesSorted} on:click={binarySearch}>
+    Binary Search
+  </button>
 
   <span>
     <StatusIndicator {valuesSorted} />
@@ -230,6 +306,9 @@
     <div
       aria-current={activeId === id ? true : undefined}
       class:selection-sort-minimum={id === selectionSortMinValueId}
+      class:search-pointer-ends={id === binarySearchLeft || id === binarySearchRight}
+      class:search-pointer-middle={id === binarySearchMiddle}
+      class:search-pointer-success={id === binarySearchSuccess}
       animate:flip={{ duration: 130 }}
       class="basic-card">
       {value}
