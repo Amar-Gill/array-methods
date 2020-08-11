@@ -141,10 +141,20 @@
     valuesSorted = true;
   }
 
+  const isNumberKey = evt => {
+    const charCode = evt.keyCode;
+    console.log(charCode);
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+    return true;
+  };
+
   // TODO - review reactive variable syntax: "$"
   async function binarySearch() {
     binarySearchSuccess = null;
     const target = parseInt(document.getElementById("search-target").value);
+    if (isNaN(target)) {
+      return;
+    }
 
     let left = 0;
     let right = values.length - 1;
@@ -168,8 +178,7 @@
         binarySearchSuccess = middle;
         await sleep(1500);
         // binarySearchSuccess = null;
-        console.log(values[middle].value);
-        return 0;
+        return;
       } else if (target < potentialMatch) {
         right = middle - 1;
         // apply styling and sleep
@@ -183,7 +192,6 @@
     binarySearchLeft = null;
     binarySearchRight = null;
     binarySearchMiddle = null;
-    return -1;
   }
 </script>
 
@@ -272,15 +280,15 @@
 
   header * {
     /* margin-right: 0.5rem; */
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 
   span:first-child {
     margin-right: 0.6rem;
   }
 
-  span:first-child button{
-    width: 95px;
+  span:first-child button {
+    width: 100px;
   }
 
   @media only screen and (max-width: 528px) {
@@ -294,19 +302,24 @@
     span:last-child {
       margin-left: auto;
     }
-
   }
 </style>
 
 <header>
   <span>
-    <button disabled={activeId != null || binarySearchLeft != null} on:click={bubbleSort}>
+    <button
+      disabled={activeId != null || binarySearchLeft != null}
+      on:click={bubbleSort}>
       Bubble Sort
     </button>
-    <button disabled={activeId != null || binarySearchLeft != null} on:click={selectionSort}>
+    <button
+      disabled={activeId != null || binarySearchLeft != null}
+      on:click={selectionSort}>
       Selection Sort
     </button>
-    <button disabled={activeId != null || binarySearchLeft != null} on:click={insertionSort}>
+    <button
+      disabled={activeId != null || binarySearchLeft != null}
+      on:click={insertionSort}>
       Insertion Sort
     </button>
     <button
@@ -317,20 +330,27 @@
   </span>
 
   <span>
-    <button disabled={activeId != null || binarySearchLeft != null} on:click={resetValues}>Reset</button>
+    <button
+      disabled={activeId != null || binarySearchLeft != null}
+      on:click={resetValues}>
+      Reset
+    </button>
     <StatusIndicator {valuesSorted} />
   </span>
 
 </header>
 <header>
-  <input
-    id="search-target"
-    disabled={!valuesSorted}
-    placeholder="search for a number"
-    type="number" />
-  <button disabled={!valuesSorted || binarySearchLeft != null} on:click={binarySearch}>
-    Binary Search
-  </button>
+    <input
+      id="search-target"
+      disabled={!valuesSorted}
+      placeholder="search for a number"
+      pattern="[0-9]-"
+      type="number" />
+    <button
+      disabled={!valuesSorted || binarySearchLeft != null}
+      on:click={binarySearch}>
+      Binary Search
+    </button>
 </header>
 
 <main class="flex-box">
