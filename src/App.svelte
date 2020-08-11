@@ -1,5 +1,6 @@
 <script>
   import { flip } from "svelte/animate";
+  import { onMount } from "svelte";
   import StatusIndicator from "./StatusIndicator.svelte";
 
   let values = [];
@@ -21,7 +22,9 @@
   let valuesSorted = false;
 
   function resetValues() {
+    // for binarySearch
     binarySearchSuccess = null;
+    document.getElementById("search-target").value = '';
 
     values = [];
 
@@ -51,7 +54,8 @@
   }
 
   // initialize the randomized array on app load
-  resetValues();
+  onMount(() => resetValues());
+
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
