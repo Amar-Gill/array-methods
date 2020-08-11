@@ -24,13 +24,13 @@
   function resetValues() {
     // for binarySearch
     binarySearchSuccess = null;
-    document.getElementById("search-target").value = '';
+    document.getElementById("search-target").value = "";
 
     values = [];
 
     let incrementor = 0;
 
-    while (incrementor < 100) {
+    while (incrementor < 120) {
       // const randInt = Math.floor(Math.random() * 11);
       values.push({ id: incrementor, value: incrementor });
       incrementor = incrementor + 1;
@@ -55,7 +55,6 @@
 
   // initialize the randomized array on app load
   onMount(() => resetValues());
-
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -242,6 +241,7 @@
   button {
     color: var(--hue-3);
     background-color: var(--hue-1);
+    /* max-width: 60px; */
   }
 
   button:disabled {
@@ -271,28 +271,58 @@
   }
 
   header * {
-    margin-right: 0.5rem;
+    /* margin-right: 0.5rem; */
+    margin-bottom: .5rem;
   }
 
-  header span {
-    margin-left: auto;
+  span:first-child {
+    margin-right: 0.6rem;
+  }
+
+  span:first-child button{
+    width: 95px;
+  }
+
+  @media only screen and (max-width: 528px) {
+    span:first-child {
+      max-width: 240px;
+    }
+  }
+
+  /* for positioning status indicator */
+  @media only screen and (min-width: 1024px) {
+    span:last-child {
+      margin-left: auto;
+    }
+
   }
 </style>
 
 <header>
-  <button disabled={activeId != null} on:click={resetValues}>Reset</button>
-  <button disabled={activeId != null} on:click={bubbleSort}>Bubble Sort</button>
-  <button disabled={activeId != null} on:click={selectionSort}>
-    Selection Sort
-  </button>
-  <button disabled={activeId != null} on:click={insertionSort}>
-    Insertion Sort
-  </button>
-  <button
-    disabled={activeId == null}
-    on:click={() => (useFastForward = !useFastForward)}>
-    Fast Forward
-  </button>
+  <span>
+    <button disabled={activeId != null} on:click={bubbleSort}>
+      Bubble Sort
+    </button>
+    <button disabled={activeId != null} on:click={selectionSort}>
+      Selection Sort
+    </button>
+    <button disabled={activeId != null} on:click={insertionSort}>
+      Insertion Sort
+    </button>
+    <button
+      disabled={activeId == null}
+      on:click={() => (useFastForward = !useFastForward)}>
+      Fast Forward
+    </button>
+  </span>
+
+  <span>
+    <button disabled={activeId != null} on:click={resetValues}>Reset</button>
+    <StatusIndicator {valuesSorted} />
+  </span>
+
+</header>
+<header>
   <input
     id="search-target"
     disabled={!valuesSorted}
@@ -301,11 +331,6 @@
   <button disabled={!valuesSorted} on:click={binarySearch}>
     Binary Search
   </button>
-
-  <span>
-    <StatusIndicator {valuesSorted} />
-  </span>
-
 </header>
 
 <main class="flex-box">
