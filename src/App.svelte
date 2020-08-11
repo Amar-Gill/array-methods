@@ -300,13 +300,13 @@
 
 <header>
   <span>
-    <button disabled={activeId != null} on:click={bubbleSort}>
+    <button disabled={activeId != null || binarySearchLeft != null} on:click={bubbleSort}>
       Bubble Sort
     </button>
-    <button disabled={activeId != null} on:click={selectionSort}>
+    <button disabled={activeId != null || binarySearchLeft != null} on:click={selectionSort}>
       Selection Sort
     </button>
-    <button disabled={activeId != null} on:click={insertionSort}>
+    <button disabled={activeId != null || binarySearchLeft != null} on:click={insertionSort}>
       Insertion Sort
     </button>
     <button
@@ -317,7 +317,7 @@
   </span>
 
   <span>
-    <button disabled={activeId != null} on:click={resetValues}>Reset</button>
+    <button disabled={activeId != null || binarySearchLeft != null} on:click={resetValues}>Reset</button>
     <StatusIndicator {valuesSorted} />
   </span>
 
@@ -328,7 +328,7 @@
     disabled={!valuesSorted}
     placeholder="search for a number"
     type="number" />
-  <button disabled={!valuesSorted} on:click={binarySearch}>
+  <button disabled={!valuesSorted || binarySearchLeft != null} on:click={binarySearch}>
     Binary Search
   </button>
 </header>
