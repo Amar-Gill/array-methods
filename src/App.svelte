@@ -21,6 +21,8 @@
   let valuesSorted = false;
 
   function resetValues() {
+    binarySearchSuccess = null;
+
     values = [];
 
     let incrementor = 0;
@@ -138,6 +140,7 @@
 
   // TODO - review reactive variable syntax: "$"
   async function binarySearch() {
+    binarySearchSuccess = null;
     const target = parseInt(document.getElementById("search-target").value);
 
     let left = 0;
@@ -150,7 +153,7 @@
       let middle = Math.floor((left + right) / 2);
       // apply styling and sleep
       binarySearchMiddle = middle;
-      await sleep(1500);
+      await sleep(1200);
 
       let potentialMatch = values[middle].value;
 
@@ -161,7 +164,7 @@
         binarySearchMiddle = null;
         binarySearchSuccess = middle;
         await sleep(1500);
-        binarySearchSuccess = null;
+        // binarySearchSuccess = null;
         console.log(values[middle].value);
         return 0;
       } else if (target < potentialMatch) {
