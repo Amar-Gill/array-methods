@@ -150,9 +150,13 @@
 
   // TODO - review reactive variable syntax: "$"
   async function binarySearch() {
+    const statusMessage = document.getElementById("search-status-message");
+    statusMessage.innerText=""
     binarySearchSuccess = null;
+
     const target = parseInt(document.getElementById("search-target").value);
     if (isNaN(target)) {
+      statusMessage.innerText="Not a number";
       return;
     }
 
@@ -283,6 +287,10 @@
     margin-bottom: 0.5rem;
   }
 
+  header input {
+    width: 2.3rem;
+  }
+
   span:first-child {
     margin-right: 0.6rem;
   }
@@ -291,6 +299,13 @@
     width: 100px;
   }
 
+  #search-status-message {
+    margin-top: 0;
+    padding-left: .5rem;
+    color: var(--comp-2);
+  }
+
+  /* container for sorting buttons */
   @media only screen and (max-width: 528px) {
     span:first-child {
       max-width: 240px;
@@ -343,7 +358,6 @@
     <input
       id="search-target"
       disabled={!valuesSorted}
-      placeholder="search for a number"
       pattern="[0-9]-"
       type="number" />
     <button
@@ -351,6 +365,7 @@
       on:click={binarySearch}>
       Binary Search
     </button>
+    <p id="search-status-message"></p>
 </header>
 
 <main class="flex-box">
