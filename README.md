@@ -8,3 +8,4 @@ Supported algorithms:
 - Bubble Sort
 - Selection Sort
 - Insertion Sort
+- Binary Search
